@@ -152,13 +152,19 @@ public class CSVUploadService {
                 currentBookLanguageList.add(bookLanguage);
             }
 
+            Publisher publisher = null;
 
-            Publisher publisher = new Publisher();
-            publisher.setName(dto.getPublisher().getName());
+            if(dto.getPublisher() != null) {
+                publisher = new Publisher();
+                publisher.setName(dto.getPublisher().getName());
 
-            if (!publisherList.contains(publisher)) {
-                publisherNewList.add(publisher);
-                publisherList.add(publisher);
+                if (!publisherList.contains(publisher)) {
+                    publisherNewList.add(publisher);
+                    publisherList.add(publisher);
+                }
+                else {
+                    publisher = publisherList.get(publisherList.indexOf(publisher));
+                }
             }
 
             book.setTitle(dto.getTitle());
