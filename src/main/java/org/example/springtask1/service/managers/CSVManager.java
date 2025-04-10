@@ -1,6 +1,9 @@
 package org.example.springtask1.service.managers;
 
+import com.opencsv.CSVParser;
+import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
 import org.example.springtask1.persistence.entity.Publisher;
 import org.example.springtask1.service.additional.BookError;
@@ -19,6 +22,7 @@ import java.util.List;
 public class CSVManager {
 
     public static Result getBookList(MultipartFile file){
+
         CSVReader reader;
         try {
             reader = new CSVReader(new InputStreamReader(file.getInputStream()));
@@ -347,6 +351,7 @@ public class CSVManager {
             }
         }
         catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
             return null;
         }
 
@@ -362,6 +367,10 @@ public class CSVManager {
             return null;
         }
         else {
+            System.out.println(Arrays.asList(header));
+            System.out.println(Arrays.asList(row));
+            System.out.println(target);
+            System.out.println(Arrays.asList(header).indexOf(target));
             return row[Arrays.asList(header).indexOf(target)];
         }
     }
