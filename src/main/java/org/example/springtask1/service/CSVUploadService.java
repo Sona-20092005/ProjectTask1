@@ -1,16 +1,15 @@
 package org.example.springtask1.service;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.text.CharacterPredicate;
 import org.example.springtask1.persistence.entity.*;
+import org.example.springtask1.persistence.entity.Character;
 import org.example.springtask1.service.additional.BookError;
 import org.example.springtask1.service.additional.BookErrorState;
 import org.example.springtask1.service.additional.Result;
-import org.example.springtask1.service.dto.AuthorDto;
-import org.example.springtask1.service.dto.GenreDto;
-import org.example.springtask1.service.dto.LanguageDto;
+import org.example.springtask1.service.dto.*;
 import org.example.springtask1.service.managers.CSVManager;
 import org.example.springtask1.persistence.repository.*;
-import org.example.springtask1.service.dto.BookDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,33 +26,54 @@ public class CSVUploadService {
     private final PublisherRepository publisherRepository;
     private final GenreRepository genreRepository;
     private final LanguageRepository languageRepository;
+    private final CharacterRepository characterRepository;
+    private final SettingRepository settingRepository;
+    private final AwardRepository awardRepository;
     private final BookAuthorRepository bookAuthorRepository;
     private final BookGenreRepository bookGenreRepository;
     private final BookLanguageRepository bookLanguageRepository;
+    private final BookCharacterRepository bookCharacterRepository;
+    private final BookSettingRepository bookSettingRepository;
+    private final BookAwardRepository bookAwardRepository;
 
     @Autowired
     public CSVUploadService(BookRepository bookRepository,
                             AuthorRepository authorRepository,
                             PublisherRepository publisherRepository,
                             GenreRepository genreRepository,
+                            CharacterRepository characterRepository,
+                            SettingRepository settingRepository,
+                            AwardRepository awardRepository,
                             LanguageRepository languageRepository,
                             BookLanguageRepository bookLanguageRepository,
                             BookAuthorRepository bookAuthorRepository,
-                            BookGenreRepository bookGenreRepository) {
+                            BookGenreRepository bookGenreRepository,
+                            BookCharacterRepository bookCharacterRepository,
+                            BookSettingRepository bookSettingRepository,
+                            BookAwardRepository bookAwardRepository) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.publisherRepository = publisherRepository;
         this.genreRepository = genreRepository;
+        this.characterRepository = characterRepository;
+        this.settingRepository = settingRepository;
+        this.awardRepository = awardRepository;
         this.languageRepository = languageRepository;
         this.bookLanguageRepository = bookLanguageRepository;
         this.bookGenreRepository = bookGenreRepository;
         this.bookAuthorRepository = bookAuthorRepository;
+        this.bookCharacterRepository = bookCharacterRepository;
+        this.bookSettingRepository = bookSettingRepository;
+        this.bookAwardRepository = bookAwardRepository;
     }
 
     public Result upload(MultipartFile file) {
 
         List<Author> authorList = authorRepository.findAll();
         List<Genre> genreList = genreRepository.findAll();
+        List<Setting> settingList = settingRepository.findAll();
+        List<Character> characterList = characterRepository.findAll();
+        List<Award> awardList = awardRepository.findAll();
         List<Language> languageList = languageRepository.findAll();
         List<Publisher> publisherList = publisherRepository.findAll();
         List<Book> bookList = bookRepository.findAll();
@@ -61,11 +81,18 @@ public class CSVUploadService {
         List<Book> bookNewList = new ArrayList<>();
         List<Author> authorNewList = new ArrayList<>();
         List<Genre> genreNewList = new ArrayList<>();
+        List<Character> characterNewList = new ArrayList<>();
+        List<Setting> settingNewList = new ArrayList<>();
+        List<Award> awardNewList = new ArrayList<>();
         List<Language> languageNewList = new ArrayList<>();
         List<Publisher> publisherNewList = new ArrayList<>();
         List<BookLanguage> bookLanguageNewList = new ArrayList<>();
         List<BookAuthor> bookAuthorNewList = new ArrayList<>();
         List<BookGenre> bookGenreNewList = new ArrayList<>();
+        List<BookCharacter> bookCharacterNewList = new ArrayList<>();
+        List<BookSetting> bookSettingNewList = new ArrayList<>();
+        List<BookAward> bookAwardNewList = new ArrayList<>();
+
 
         Result result = CSVManager.getBookList(file);
 
@@ -92,6 +119,9 @@ public class CSVUploadService {
 
             List<BookAuthor> currentBookAuthorList = new ArrayList<>();
             List<BookGenre> currentBookGenreList = new ArrayList<>();
+            List<BookCharacter> currentBookCharacterList = new ArrayList<>();
+            List<BookSetting> currentBookSettingList = new ArrayList<>();
+            List<BookAward> currentBookAwardList = new ArrayList<>();
             List<BookLanguage> currentBookLanguageList = new ArrayList<>();
 
             for (AuthorDto authorDto : dto.getAuthorList()) {
@@ -124,6 +154,7 @@ public class CSVUploadService {
                 if (!genreList.contains(genre)) {
                     genreNewList.add(genre);
                     genreList.add(genre);
+                    bookGenre.setGenre(genre);
                 }
                 else {
                     bookGenre.setGenre(genreList.get(genreList.indexOf(genre)));
@@ -131,6 +162,64 @@ public class CSVUploadService {
 
                 bookGenreNewList.add(bookGenre);
                 currentBookGenreList.add(bookGenre);
+            }
+
+            for (CharacterDto characterDto : dto.getCharacterList()) {
+                Character character = new Character();
+                character.setName(characterDto.getName());
+                BookCharacter bookCharacter = new BookCharacter();
+                bookCharacter.setBook(book);
+
+                if (!characterList.contains(character)) {
+                    characterNewList.add(character);
+                    characterList.add(character);
+                    bookCharacter.setCharacter(character);
+                }
+                else {
+                    bookCharacter.setCharacter(characterList.get(characterList.indexOf(character)));
+                }
+
+                bookCharacterNewList.add(bookCharacter);
+                currentBookCharacterList.add(bookCharacter);
+            }
+
+            for (SettingDto settingDto : dto.getSettingList()) {
+                Setting setting = new Setting();
+                setting.setSetting(settingDto.getSetting());
+                BookSetting bookSetting = new BookSetting();
+                bookSetting.setBook(book);
+
+                if (!settingList.contains(setting)) {
+                    settingNewList.add(setting);
+                    settingList.add(setting);
+                    bookSetting.setSetting(setting);
+                }
+                else {
+                    bookSetting.setSetting(settingList.get(settingList.indexOf(setting)));
+                }
+
+                bookSettingNewList.add(bookSetting);
+                currentBookSettingList.add(bookSetting);
+            }
+
+            for (AwardDto awardDto : dto.getAwardList()) {
+                Award award = new Award();
+                award.setAward(awardDto.getAward());
+                award.setYear(awardDto.getYear());
+                BookAward bookAward = new BookAward();
+                bookAward.setBook(book);
+
+                if (!awardList.contains(award)) {
+                    awardNewList.add(award);
+                    awardList.add(award);
+                    bookAward.setAward(award);
+                }
+                else {
+                    bookAward.setAward(awardList.get(awardList.indexOf(award)));
+                }
+
+                bookAwardNewList.add(bookAward);
+                currentBookAwardList.add(bookAward);
             }
 
             for (LanguageDto languageDto : dto.getLanguageList()) {
@@ -143,6 +232,7 @@ public class CSVUploadService {
                 if (!languageList.contains(language)) {
                     languageNewList.add(language);
                     languageList.add(language);
+                    bookLanguage.setLanguage(language);
                 }
                 else {
                     bookLanguage.setLanguage(languageList.get(languageList.indexOf(language)));
@@ -171,9 +261,7 @@ public class CSVUploadService {
             book.setBookId(dto.getBookId());
             book.setSeriesName(dto.getSeries());
             book.setSeriesNumber(dto.getSeriesNumber());
-            book.setAwards(dto.getAwards());
             book.setBookFormat(dto.getBookFormat());
-            book.setCharacters(dto.getCharacters());
             book.setDescription(dto.getDescription());
             book.setBbeScore(dto.getBbeScore());
             book.setBbeVotes(dto.getBbeVotes());
@@ -187,10 +275,12 @@ public class CSVUploadService {
             book.setLikedPercent(dto.getLikedPercent());
             book.setPrice(dto.getPrice());
             book.setPages(dto.getPages());
-            book.setSetting(dto.getSetting());
             book.setPublisher(publisher);
             book.setAuthors(currentBookAuthorList);
             book.setGenres(currentBookGenreList);
+            book.setCharacters(currentBookCharacterList);
+            book.setSetting(currentBookSettingList);
+            book.setAwards(currentBookAwardList);
             book.setLanguages(currentBookLanguageList);
 
             bookNewList.add(book);
@@ -200,11 +290,17 @@ public class CSVUploadService {
 
         authorRepository.saveAll(authorNewList);
         genreRepository.saveAll(genreNewList);
+        characterRepository.saveAll(characterNewList);
+        settingRepository.saveAll(settingNewList);
+        awardRepository.saveAll(awardNewList);
         languageRepository.saveAll(languageNewList);
         publisherRepository.saveAll(publisherNewList);
         bookRepository.saveAll(bookNewList);
         bookAuthorRepository.saveAll(bookAuthorNewList);
         bookGenreRepository.saveAll(bookGenreNewList);
+        bookCharacterRepository.saveAll(bookCharacterNewList);
+        bookSettingRepository.saveAll(bookSettingNewList);
+        bookAwardRepository.saveAll(bookAwardNewList);
         bookLanguageRepository.saveAll(bookLanguageNewList);
 
         Result returnResult = new Result();

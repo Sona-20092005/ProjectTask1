@@ -42,9 +42,6 @@ public class Book {
     @Column(name = "rating")
     private Float rating;
 
-    @Column(name = "characters", columnDefinition = "TEXT")
-    private String characters;
-
     @Column(name = "bookFormat")
     private String bookFormat;
 
@@ -63,9 +60,6 @@ public class Book {
     @Column(name = "firstPublishDate")
     private String firstPublishDate;
 
-    @Column(name = "awards", columnDefinition = "TEXT")
-    private String awards;
-
     @Column(name = "numRatings")
     private Integer numRatings;
 
@@ -74,9 +68,6 @@ public class Book {
 
     @Column(name = "likedPercent")
     private Integer likedPercent;
-
-    @Column(name = "setting", columnDefinition = "TEXT")
-    private String setting;
 
     @Column(name = "coverImg")
     private String coverImg;
@@ -96,10 +87,18 @@ public class Book {
     @OneToMany(mappedBy = "book")
     private List<BookLanguage> languages;
 
+    @OneToMany(mappedBy = "book")
+    private List<BookCharacter> characters;
+
+    @OneToMany(mappedBy = "book")
+    private List<BookSetting> setting;
+
+    @OneToMany(mappedBy = "book")
+    private List<BookAward> awards;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id")
     private Publisher publisher;
-
 
     public Long getId() {
         return id;
@@ -165,14 +164,6 @@ public class Book {
         this.rating = rating;
     }
 
-    public String getCharacters() {
-        return characters;
-    }
-
-    public void setCharacters(String characters) {
-        this.characters = characters;
-    }
-
     public String getBookFormat() {
         return bookFormat;
     }
@@ -221,14 +212,6 @@ public class Book {
         this.firstPublishDate = firstPublishDate;
     }
 
-    public String getAwards() {
-        return awards;
-    }
-
-    public void setAwards(String awards) {
-        this.awards = awards;
-    }
-
     public Integer getNumRatings() {
         return numRatings;
     }
@@ -251,14 +234,6 @@ public class Book {
 
     public void setLikedPercent(Integer likedPercent) {
         this.likedPercent = likedPercent;
-    }
-
-    public String getSetting() {
-        return setting;
-    }
-
-    public void setSetting(String setting) {
-        this.setting = setting;
     }
 
     public String getCoverImg() {
@@ -307,6 +282,30 @@ public class Book {
 
     public void setLanguages(List<BookLanguage> languages) {
         this.languages = languages;
+    }
+
+    public List<BookCharacter> getCharacters() {
+        return characters;
+    }
+
+    public void setCharacters(List<BookCharacter> characters) {
+        this.characters = characters;
+    }
+
+    public List<BookSetting> getSetting() {
+        return setting;
+    }
+
+    public void setSetting(List<BookSetting> setting) {
+        this.setting = setting;
+    }
+
+    public List<BookAward> getAwards() {
+        return awards;
+    }
+
+    public void setAwards(List<BookAward> awards) {
+        this.awards = awards;
     }
 
     public Publisher getPublisher() {

@@ -36,6 +36,9 @@ public class CSVManager {
         List<GenreDto> genreDtoList = new ArrayList<>();
         List<LanguageDto> languageDtoList = new ArrayList<>();
         List<PublisherDto> publisherDtoList = new ArrayList<>();
+        List<CharacterDto> characterDtoList = new ArrayList<>();
+        List<SettingDto> settingDtoList = new ArrayList<>();
+        List<AwardDto> awardDtoList = new ArrayList<>();
 
         String[] row;
         String[] headers;
@@ -194,6 +197,130 @@ public class CSVManager {
                     bookDto.setPublisher(publisherDto);
                 }
 
+                //characters
+                List<CharacterDto> currentCharacterDtoList = new ArrayList<>();
+
+                value = value(headers, row, "characters");
+                if (value != null && !value.isBlank()) {
+                    int open = value.indexOf('[');
+                    int close = value.indexOf(']');
+
+                    if (open != -1 && close != -1 && open < close) {
+                        value = value.substring(1, value.length() - 1);
+                    }
+                    value = value.replace("'", "");
+
+                    String[] characters = value.split(",");
+
+                    for (String character : characters) {
+                        CharacterDto characterDto = new CharacterDto();
+                        characterDto.setName(character.trim());
+
+                        if (!characterDto.getName().isEmpty()) {
+
+                            if (!characterDtoList.contains(characterDto)) {
+                                characterDtoList.add(characterDto);
+                            }
+                            else {
+                                characterDto = characterDtoList.get(characterDtoList.indexOf(characterDto));
+                            }
+
+                            currentCharacterDtoList.add(characterDto);
+                        }
+                    }
+
+                    bookDto.setCharacterList(currentCharacterDtoList);
+                }
+
+                //setting
+                List<SettingDto> currentSettingDtoList = new ArrayList<>();
+
+                value = value(headers, row, "setting");
+                if (value != null && !value.isBlank()) {
+                    int open = value.indexOf('[');
+                    int close = value.indexOf(']');
+
+                    if (open != -1 && close != -1 && open < close) {
+                        value = value.substring(1, value.length() - 1);
+                    }
+                    value = value.replace("'", "");
+
+                    String[] settings = value.split(",");
+
+                    for (String setting : settings) {
+                        SettingDto settingDto = new SettingDto();
+                        settingDto.setSetting(setting.trim());
+
+                        if (!settingDto.getSetting().isEmpty()) {
+
+                            if (!settingDtoList.contains(settingDto)) {
+                                settingDtoList.add(settingDto);
+                            }
+                            else {
+                                settingDto = settingDtoList.get(settingDtoList.indexOf(settingDto));
+                            }
+
+                            currentSettingDtoList.add(settingDto);
+                        }
+                    }
+
+                    bookDto.setSettingList(currentSettingDtoList);
+                }
+
+                //award
+                List<AwardDto> currentAwardDtoList = new ArrayList<>();
+
+                value = value(headers, row, "awards");
+                if (value != null && !value.isBlank()) {
+                    int open = value.indexOf('[');
+                    int close = value.indexOf(']');
+
+                    if (open != -1 && close != -1 && open < close) {
+                        value = value.substring(1, value.length() - 1);
+                    }
+                    value = value.replace("'", "");
+                    value = value.replace("\"", "");
+
+                    String[] awards = value.split(",");
+
+                    for (String award : awards) {
+                        AwardDto awardDto = new AwardDto();
+                        awardDto.setAward(award.trim());
+
+                        int openInner = award.lastIndexOf('(');
+                        int closeInner = award.lastIndexOf(')');
+
+                        if (open != -1 && close != -1 && openInner < closeInner && closeInner == award.length() - 1) {
+                            String yearString = award.substring(openInner + 1, closeInner).trim();
+                            if (NumberUtils.isCreatable(yearString)) {
+                                awardDto.setAward(award.substring(0, openInner).trim());
+                                awardDto.setYear(Integer.valueOf(yearString));
+                            }
+                            else {
+                                awardDto.setAward(award.trim());
+                            }
+                        }
+                        else {
+                            awardDto.setAward(award.trim());
+                        }
+
+                        if (!awardDto.getAward().isEmpty()) {
+
+                            if (!awardDtoList.contains(awardDto)) {
+                                awardDtoList.add(awardDto);
+                            }
+                            else {
+                                awardDto = awardDtoList.get(awardDtoList.indexOf(awardDto));
+                            }
+
+                            currentAwardDtoList.add(awardDto);
+                        }
+                    }
+
+                    bookDto.setAwardList(currentAwardDtoList);
+                }
+
+
                 //series
                 value = value(headers, row, "series");
                 if(value != null && !value.isBlank()) {
@@ -224,11 +351,7 @@ public class CSVManager {
                     bookDto.setNumRatings(Integer.valueOf(value));
                 }
 
-                //characters
-                value = value(headers, row, "characters");
-                if (value != null && !value.isBlank()) {
-                    bookDto.setCharacters(value.trim());
-                }
+
 
                 //bookFormat
                 value = value(headers, row, "bookFormat");
@@ -266,12 +389,6 @@ public class CSVManager {
                     bookDto.setFirstPublishDate(value.trim());
                 }
 
-                //awards
-                value = value(headers, row, "awards");
-                if (value != null && !value.isBlank()) {
-                    bookDto.setAwards(value.trim());
-                }
-
                 //ratingsByStars
                 value = value(headers, row, "ratingsByStars");
                 if (value != null && !value.isBlank()) {
@@ -282,12 +399,6 @@ public class CSVManager {
                 value = value(headers, row, "likedPercent");
                 if (NumberUtils.isCreatable(value)) {
                     bookDto.setLikedPercent(Integer.valueOf(value));
-                }
-
-                //setting
-                value = value(headers, row, "setting");
-                if (value != null && !value.isBlank()) {
-                    bookDto.setSetting(value.trim());
                 }
 
                 //coverImg

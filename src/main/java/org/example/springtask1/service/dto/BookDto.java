@@ -1,5 +1,7 @@
 package org.example.springtask1.service.dto;
 
+import org.example.springtask1.persistence.entity.Award;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -21,18 +23,15 @@ public class BookDto {
     private String seriesNumber;
     private String description;
     private Float rating;
-    private String characters;
     private String bookFormat;
     private String edition;
     private Integer pages;
     private String price;
     private String publishDate;
     private String firstPublishDate;
-    private String awards;
     private Integer numRatings;
     private String ratingsByStars;
     private Integer likedPercent;
-    private String setting;
     private String coverImg;
     private Integer bbeScore;
     private Integer bbeVotes;
@@ -40,8 +39,19 @@ public class BookDto {
     private List<AuthorDto> authorList;
     private List<GenreDto> genreList;
     private List<LanguageDto> languageList;
+    private List<CharacterDto> characterList;
+    private List<SettingDto> settingList;
+    private List<AwardDto> awardList;
 
     private PublisherDto publisher;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Long getIsbn() {
         return isbn;
@@ -99,14 +109,6 @@ public class BookDto {
         this.rating = rating;
     }
 
-    public String getCharacters() {
-        return characters;
-    }
-
-    public void setCharacters(String characters) {
-        this.characters = characters;
-    }
-
     public String getBookFormat() {
         return bookFormat;
     }
@@ -155,14 +157,6 @@ public class BookDto {
         this.firstPublishDate = firstPublishDate;
     }
 
-    public String getAwards() {
-        return awards;
-    }
-
-    public void setAwards(String awards) {
-        this.awards = awards;
-    }
-
     public Integer getNumRatings() {
         return numRatings;
     }
@@ -185,14 +179,6 @@ public class BookDto {
 
     public void setLikedPercent(Integer likedPercent) {
         this.likedPercent = likedPercent;
-    }
-
-    public String getSetting() {
-        return setting;
-    }
-
-    public void setSetting(String setting) {
-        this.setting = setting;
     }
 
     public String getCoverImg() {
@@ -241,6 +227,30 @@ public class BookDto {
 
     public void setLanguageList(List<LanguageDto> languageList) {
         this.languageList = languageList;
+    }
+
+    public List<CharacterDto> getCharacterList() {
+        return characterList;
+    }
+
+    public void setCharacterList(List<CharacterDto> characterList) {
+        this.characterList = characterList;
+    }
+
+    public List<SettingDto> getSettingList() {
+        return settingList;
+    }
+
+    public void setSettingList(List<SettingDto> settingList) {
+        this.settingList = settingList;
+    }
+
+    public List<AwardDto> getAwardList() {
+        return awardList;
+    }
+
+    public void setAwardList(List<AwardDto> awardList) {
+        this.awardList = awardList;
     }
 
     public PublisherDto getPublisher() {
