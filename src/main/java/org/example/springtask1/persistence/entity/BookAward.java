@@ -9,16 +9,24 @@ import jakarta.persistence.*;
 public class BookAward {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_award_id_seq")
+    @SequenceGenerator(
+            name = "book_award_id_seq",
+            sequenceName = "book_award_id_seq",
+            allocationSize = 50
+    )
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     private Book book;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "award_id")
     private Award award;
+
+    @Column(name = "year")
+    private Integer year;
 
     public Long getId() {
         return id;
@@ -42,5 +50,13 @@ public class BookAward {
 
     public void setAward(Award award) {
         this.award = award;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
     }
 }

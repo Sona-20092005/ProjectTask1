@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -13,14 +14,19 @@ import java.util.Set;
 public class Character {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "character_id_seq")
+    @SequenceGenerator(
+            name = "character_id_seq",
+            sequenceName = "character_id_seq",
+            allocationSize = 50
+    )
     private Long id;
 
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @OneToMany(mappedBy = "character")
-    private List<BookCharacter> books;
+    private List<BookCharacter> books = new ArrayList<>();;
 
     public Long getId() {
         return id;

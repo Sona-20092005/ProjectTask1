@@ -2,7 +2,7 @@ package org.example.springtask1.controller;
 
 import org.example.springtask1.service.CSVUploadService;
 import org.example.springtask1.service.additional.BookError;
-import org.example.springtask1.service.additional.Result;
+import org.example.springtask1.service.additional.BookUploadResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class CSVUploadController {
 
     private final CSVUploadService service;
-
+    
     @Autowired
     public CSVUploadController(CSVUploadService service) {
         this.service = service;
@@ -26,7 +26,7 @@ public class CSVUploadController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File is empty");
         }
 
-        Result result = service.upload(file);
+        BookUploadResult result = service.upload(file);
 
         if (result == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unable to perform request");

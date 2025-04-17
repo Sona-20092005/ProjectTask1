@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -15,16 +16,21 @@ import java.util.Set;
 public class Language {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "language_id_seq")
+    @SequenceGenerator(
+            name = "language_id_seq",
+            sequenceName = "language_id_seq",
+            allocationSize = 50
+    )
     private Long id;
 
-    @Column(name = "language", nullable = false, unique = true)
+    @Column(name = "language", nullable = false)
     private String language;
     @Column(name = "addtional")
     private String additional;
 
     @OneToMany(mappedBy = "language")
-    private List<BookLanguage> books;
+    private List<BookLanguage> books = new ArrayList<>();
 
     public Long getId() {
         return id;

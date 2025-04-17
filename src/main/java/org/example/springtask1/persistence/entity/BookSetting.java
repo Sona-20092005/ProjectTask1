@@ -7,15 +7,20 @@ import jakarta.persistence.*;
 public class BookSetting {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_setting_id_seq")
+    @SequenceGenerator(
+            name = "book_setting_id_seq",
+            sequenceName = "book_setting_id_seq",
+            allocationSize = 50
+    )
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     private Book book;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "character_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "setting_id")
     private Setting setting;
 
     public Long getId() {

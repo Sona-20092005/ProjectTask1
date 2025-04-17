@@ -9,14 +9,19 @@ import jakarta.persistence.*;
 public class BookCharacter {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_character_id_seq")
+    @SequenceGenerator(
+            name = "book_character_id_seq",
+            sequenceName = "book_character_id_seq",
+            allocationSize = 50
+    )
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     private Book book;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "character_id")
     private Character character;
 

@@ -1,6 +1,6 @@
 package org.example.springtask1.service.additional;
 
-import org.example.springtask1.service.dto.BookDto;
+import org.example.springtask1.service.dto.csvreader.BookDto;
 
 public class BookError {
     BookDto bookDto;

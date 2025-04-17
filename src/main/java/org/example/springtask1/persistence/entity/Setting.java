@@ -2,6 +2,7 @@ package org.example.springtask1.persistence.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,14 +13,19 @@ import java.util.Objects;
 public class Setting {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "setting_id_seq")
+    @SequenceGenerator(
+            name = "setting_id_seq",
+            sequenceName = "setting_id_seq",
+            allocationSize = 50
+    )
     private Long id;
 
     @Column(name = "setting", nullable = false, unique = true)
     private String setting;
 
     @OneToMany(mappedBy = "setting")
-    private List<BookSetting> books;
+    private List<BookSetting> books = new ArrayList<>();
 
     public Long getId() {
         return id;

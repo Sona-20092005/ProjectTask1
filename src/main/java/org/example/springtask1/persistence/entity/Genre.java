@@ -4,25 +4,29 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "genre")
-//@Setter
-//@Getter
 public class Genre {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "genre_id_seq")
+    @SequenceGenerator(
+            name = "genre_id_seq",
+            sequenceName = "genre_id_seq",
+            allocationSize = 50
+    )
     private Long id;
 
     @Column(name = "genre", nullable = false, unique = true)
     private String genre;
 
     @OneToMany(mappedBy = "genre")
-    private List<BookGenre> books;
+    private List<BookGenre> books = new ArrayList<>();
 
     public Long getId() {
         return id;

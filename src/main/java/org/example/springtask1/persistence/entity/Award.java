@@ -2,6 +2,7 @@ package org.example.springtask1.persistence.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,17 +13,19 @@ import java.util.Objects;
 public class Award {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "award_id_seq")
+    @SequenceGenerator(
+            name = "award_id_seq",
+            sequenceName = "award_id_seq",
+            allocationSize = 50
+    )
     private Long id;
 
-    @Column(name = "award", nullable = false)
+    @Column(name = "award", nullable = false, unique = true)
     private String award;
 
-    @Column(name = "year")
-    private Integer year;
-
     @OneToMany(mappedBy = "award")
-    private List<BookAward> books;
+    private List<BookAward> books = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -48,24 +51,16 @@ public class Award {
         this.books = books;
     }
 
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Award award1 = (Award) o;
-        return Objects.equals(award, award1.award) && Objects.equals(year, award1.year);
+        return Objects.equals(award, award1.award);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(award, year);
+        return Objects.hash(award);
     }
 }
