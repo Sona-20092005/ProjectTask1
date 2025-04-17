@@ -68,8 +68,8 @@ public class CSVUploadService {
         Set<Long> bookList = bookRepository.findAllIsbn();
         List<Book> bookNewList = new ArrayList<>();
 
-//        BookUploadResult result = CSVJacksonReader.getBookList(file);
-        BookUploadResult result = CSVManager.getBookList(file);
+        BookUploadResult result = CSVJacksonReader.getBookList(file);
+//        BookUploadResult result = CSVManager.getBookList(file);
 
 
         if(result == null) {
