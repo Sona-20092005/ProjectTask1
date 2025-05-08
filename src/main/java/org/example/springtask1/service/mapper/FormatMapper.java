@@ -3,9 +3,7 @@ package org.example.springtask1.service.mapper;
 import org.example.springtask1.persistence.entity.Book;
 import org.example.springtask1.persistence.entity.BookFormat;
 import org.example.springtask1.persistence.entity.Format;
-import org.example.springtask1.persistence.entity.Format;
-import org.example.springtask1.service.dto.csvreader.FormatDto;
-import org.example.springtask1.service.dto.csvreader.FormatDto;
+import org.example.springtask1.dto.FormatDto;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

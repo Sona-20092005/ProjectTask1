@@ -2,10 +2,11 @@ package org.example.springtask1.service.manager;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+import org.example.springtask1.dto.*;
+import org.example.springtask1.dto.bookdto.BookDto;
 import org.example.springtask1.service.additional.BookError;
 import org.example.springtask1.service.additional.BookErrorState;
 import org.example.springtask1.service.additional.BookUploadResult;
-import org.example.springtask1.service.dto.csvreader.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.apache.commons.lang3.math.NumberUtils;
 

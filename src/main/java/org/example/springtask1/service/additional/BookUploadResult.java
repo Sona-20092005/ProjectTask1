@@ -1,6 +1,6 @@
 package org.example.springtask1.service.additional;
 
-import org.example.springtask1.service.dto.csvreader.BookDto;
+import org.example.springtask1.dto.bookdto.BookDto;
 
 import java.util.ArrayList;
 import java.util.List;

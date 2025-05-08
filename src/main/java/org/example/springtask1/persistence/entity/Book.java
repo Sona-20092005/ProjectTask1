@@ -105,6 +105,10 @@ public class Book {
     @JoinColumn(name = "publisher_id")
     private Publisher publisher;
 
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "cover_id")
+//    private Cover cover;
+
     public Long getId() {
         return id;
     }

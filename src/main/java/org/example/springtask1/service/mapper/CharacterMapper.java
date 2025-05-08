@@ -2,9 +2,7 @@ package org.example.springtask1.service.mapper;
 
 import org.example.springtask1.persistence.entity.*;
 import org.example.springtask1.persistence.entity.Character;
-import org.example.springtask1.service.dto.csvreader.AuthorDto;
-import org.example.springtask1.service.dto.csvreader.AwardDto;
-import org.example.springtask1.service.dto.csvreader.CharacterDto;
+import org.example.springtask1.dto.CharacterDto;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

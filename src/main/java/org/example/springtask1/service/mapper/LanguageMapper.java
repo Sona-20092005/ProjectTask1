@@ -3,9 +3,7 @@ package org.example.springtask1.service.mapper;
 import org.example.springtask1.persistence.entity.Book;
 import org.example.springtask1.persistence.entity.BookLanguage;
 import org.example.springtask1.persistence.entity.Language;
-import org.example.springtask1.persistence.entity.Language;
-import org.example.springtask1.service.dto.csvreader.LanguageDto;
-import org.example.springtask1.service.dto.csvreader.LanguageDto;
+import org.example.springtask1.dto.LanguageDto;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

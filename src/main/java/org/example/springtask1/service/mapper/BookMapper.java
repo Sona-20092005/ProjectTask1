@@ -1,9 +1,7 @@
 package org.example.springtask1.service.mapper;
 
 import org.example.springtask1.persistence.entity.Book;
-import org.example.springtask1.persistence.entity.Character;
-import org.example.springtask1.service.dto.csvreader.BookDto;
-import org.example.springtask1.service.dto.csvreader.CharacterDto;
+import org.example.springtask1.dto.bookdto.BookDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
